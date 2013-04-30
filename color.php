@@ -43,11 +43,11 @@ class sh_color {
 	// Returns colored string
 	public function color_string($string, $txt_color=NULL, $bg_color=NULL){
 		$return = "";
-		if (isset($this->txt_colors[strtolower((string) $txt_color)])){
-			$return .= "\033[" . $this->txt_colors[strtolower((string) $txt_color)] . "m";
+		if(isset($this->txt_colors[strtolower((string) $txt_color)])){
+			$return .= "\033[".$this->txt_colors[strtolower((string) $txt_color)] . "m";
 		}
-		if (isset($this->bg_colors[strtolower((string) $bg_color)])){
-			$return .= "\033[" . $this->bg_colors[strtolower((string) $bg_color)] . "m";
+		if(isset($this->bg_colors[strtolower((string) $bg_color)])){
+			$return .= "\033[".$this->bg_colors[strtolower((string) $bg_color)] . "m";
 		}
 		$return .=  $string . "\033[0m";
 		
@@ -69,17 +69,25 @@ $color = new sh_color;
 $args = getopt('s:c:C:');
 
 // test if arguments exist
-if(!isset($args['c'])){
+if(empty($args['c'])){
 	$args['c'] = NULL; // prevents error
 }
-if(!isset($args['C'])){
+if(empty($args['C'])){
 	$args['C'] = NULL; // prevents error
 }
-if(!isset($args['s'])){
-	// error out if no string
-	$args['s'] = 'ERROR: argument -s is required';
-	$args['c'] = 'bold_red';
-	$args['C'] = 'black';
+if(empty($args['s'])){
+	stream_set_blocking(STDIN,0);
+	$handle = fopen('php://stdin', 'r');
+	$stdin = stream_get_contents($handle);
+	if(empty($stdin)){
+		// error out if no string
+		$args['s'] = 'ERROR: String is empty, please use STDIN or argument -s';
+		$args['c'] = 'bold_red';
+		$args['C'] = 'black';
+	}
+	else{
+		$args['s'] = (string) $stdin;
+	}
 }
 
 $output = $color->color_string($args['s'], $args['c'], $args['C']);
@@ -94,7 +102,7 @@ $output = $color->color_string($args['s'], $args['c'], $args['C']);
 //}
 
 echo $output;
-exit();
+exit(0);
 
 
 
