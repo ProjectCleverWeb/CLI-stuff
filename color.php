@@ -36,38 +36,80 @@ class Colors {
 	// Returns colored string
 	public function string($string, $txt_color=NULL, $bg_color=NULL) {
 		$return = "";
-		// Check if given foreground color found
 		if (isset($this->txt_colors[strtolower((string) $txt_color)])) {
 			$return .= "\033[" . $this->txt_colors[strtolower((string) $txt_color)] . "m";
 		}
-		// Check if given background color found
 		if (isset($this->bg_colors[strtolower((string) $bg_color)])) {
 			$return .= "\033[" . $this->bg_colors[strtolower((string) $bg_color)] . "m";
 		}
-		// Add string and end coloring
+		
 		$return .=  $string . "\033[0m";
 		return $return;
 	}
-	// Returns all foreground color names
+	
 	public function get_txtcolors() {
 		return array_keys($this->txt_colors);
 	}
-	// Returns all background color names
+	
 	public function get_bgcolors() {
 		return array_keys($this->bg_colors);
 	}
 }
 
 $color = new Colors;
+$args = getopt('s:c:C:');
 
-foreach ($color->get_txtcolors() as $value) {
-	echo $color->getColoredString('This is the txt color: '.str_replace('_', ' ',$value), $value).PHP_EOL;
+
+if(!isset($args['c'])){
+	$args['c'] = NULL;
 }
-foreach ($color->get_bgcolors() as $value) {
-	echo $color->getColoredString('This is the bg color: '.str_replace('_', ' ',$value), NULL, $value).PHP_EOL;
+if(!isset($args['C'])){
+	$args['C'] = NULL;
+}
+if(!isset($args['s'])){
+	$args['s'] = 'ERROR: argument -s is required';
+	$args['c'] = 'bold_red';
+	$args['C'] = 'black';
 }
 
+$output = $color->string($args['s'], $args['c'], $args['C']).PHP_EOL;
 
+fwrite(STDOUT, $output);
+exit();
+
+
+function colorize($text, $status) {
+ $out = "";
+ switch($status) {
+  case "SUCCESS":
+   $out = "[42m"; //Green background
+   break;
+  case "FAILURE":
+   $out = "[41m"; //Red background
+   break;
+  case "WARNING":
+   $out = "[43m"; //Yellow background
+   break;
+  case "NOTE":
+   $out = "[44m"; //Blue background
+   break;
+  default:
+   throw new Exception("Invalid status: " . $status);
+ }
+ // return sprintf("%c".$out.$text."%c[0m", 27);
+ return chr(27) . "$out" . "$text" . chr(27) . "[0m";
+}
+ 
+echo colorize("Your command has successfully executed...", "SUCCESS");
+
+
+// print all the colors
+// foreach ($color->get_txtcolors() as $value) {
+// 	echo $color->string('This is the txt color: '.str_replace('_', ' ',$value), $value).PHP_EOL;
+// }
+// foreach ($color->get_bgcolors() as $value) {
+// 	echo $color->string('This is the bg color: '.str_replace('_', ' ',$value), NULL, $value).PHP_EOL;
+// }
 
 
 
