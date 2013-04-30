@@ -29,19 +29,19 @@ class sh_color {
 			'bold_white'  => '1;37'
 		);
 		$this->bg_colors = array(
-			'black'       => '0;30',
-			'red'         => '0;31',
-			'green'       => '0;32',
-			'yellow'      => '0;33',
-			'blue'        => '0;34',
-			'purple'      => '0;35',
-			'cyan'        => '0;36',
-			'white'       => '0;37'
+			'black'       => '40',
+			'red'         => '41',
+			'green'       => '42',
+			'yellow'      => '43',
+			'blue'        => '44',
+			'purple'      => '45',
+			'cyan'        => '46',
+			'white'       => '47'
 		);
 	}
 
 	// Returns colored string
-	public function string($string, $txt_color=NULL, $bg_color=NULL){
+	public function color_string($string, $txt_color=NULL, $bg_color=NULL){
 		$return = "";
 		if (isset($this->txt_colors[strtolower((string) $txt_color)])){
 			$return .= "\033[" . $this->txt_colors[strtolower((string) $txt_color)] . "m";
@@ -82,18 +82,18 @@ if(!isset($args['s'])){
 	$args['C'] = 'black';
 }
 
-$output = $color->string($args['s'], $args['c'], $args['C']).PHP_EOL;
+$output = $color->color_string($args['s'], $args['c'], $args['C']);
 
 // print all the colors
 //$output = '';
 //foreach ($color->get_txtcolors() as $value) {
-//	$output .= $color->string('This is the txt color: '.str_replace('_', ' ',$value), $value).PHP_EOL;
+//	$output .= $color->color_string('This is the txt color: '.str_replace('_', ' ',$value), $value).PHP_EOL;
 //}
 //foreach ($color->get_bgcolors() as $value) {
-//	$output .= $color->string('This is the bg color: '.str_replace('_', ' ',$value), NULL, $value).PHP_EOL;
+//	$output .= $color->color_string('This is the bg color: '.str_replace('_', ' ',$value), NULL, $value).PHP_EOL;
 //}
 
-fwrite(STDOUT, $output);
+echo $output;
 exit();
 
 
