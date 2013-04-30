@@ -1,49 +1,56 @@
 <?php 
-class Colors {
+/**
+ * @copyright Nicholas Jordon
+ */
+class sh_color {
 	private $txt_colors = array();
 	private $bg_colors = array();
 
-	public function __construct() {
-		// Set up shell colors
-		$this->txt_colors['black'] = '0;30';
-		$this->txt_colors['blue'] = '0;34';
-		$this->txt_colors['green'] = '0;32';
-		$this->txt_colors['cyan'] = '0;36';
-		$this->txt_colors['red'] = '0;31';
-		$this->txt_colors['pink'] = '0;35';
-		$this->txt_colors['yellow'] = '0;33';
-		$this->txt_colors['white'] = '0;37';
-		
-		$this->txt_colors['bold_black'] = '1;30';
-		$this->txt_colors['bold_blue'] = '1;34';
-		$this->txt_colors['bold_green'] = '1;32';
-		$this->txt_colors['bold_cyan'] = '1;36';
-		$this->txt_colors['bold_red'] = '1;31';
-		$this->txt_colors['bold_pink'] = '1;35';
-		$this->txt_colors['bold_yellow'] = '1;33';
-		$this->txt_colors['bold_white'] = '1;37';
-
-		$this->bg_colors['black'] = '40';
-		$this->bg_colors['red'] = '41';
-		$this->bg_colors['green'] = '42';
-		$this->bg_colors['yellow'] = '43';
-		$this->bg_colors['blue'] = '44';
-		$this->bg_colors['pink'] = '45';
-		$this->bg_colors['cyan'] = '46';
-		$this->bg_colors['white'] = '47';
+	public function __construct(){
+		// Set up colors
+		$this->txt_colors = array(
+			// regular
+			'black'       => '0;30',
+			'red'         => '0;31',
+			'green'       => '0;32',
+			'yellow'      => '0;33',
+			'blue'        => '0;34',
+			'purple'      => '0;35',
+			'cyan'        => '0;36',
+			'white'       => '0;37',
+			// bold
+			'bold_black'  => '1;30',
+			'bold_red'    => '1;31',
+			'bold_green'  => '1;32',
+			'bold_yellow' => '1;33',
+			'bold_blue'   => '1;34',
+			'bold_purple' => '1;35',
+			'bold_cyan'   => '1;36',
+			'bold_white'  => '1;37'
+		);
+		$this->bg_colors = array(
+			'black'       => '0;30',
+			'red'         => '0;31',
+			'green'       => '0;32',
+			'yellow'      => '0;33',
+			'blue'        => '0;34',
+			'purple'      => '0;35',
+			'cyan'        => '0;36',
+			'white'       => '0;37'
+		);
 	}
 
 	// Returns colored string
-	public function string($string, $txt_color=NULL, $bg_color=NULL) {
+	public function string($string, $txt_color=NULL, $bg_color=NULL){
 		$return = "";
-		if (isset($this->txt_colors[strtolower((string) $txt_color)])) {
+		if (isset($this->txt_colors[strtolower((string) $txt_color)])){
 			$return .= "\033[" . $this->txt_colors[strtolower((string) $txt_color)] . "m";
 		}
-		if (isset($this->bg_colors[strtolower((string) $bg_color)])) {
+		if (isset($this->bg_colors[strtolower((string) $bg_color)])){
 			$return .= "\033[" . $this->bg_colors[strtolower((string) $bg_color)] . "m";
 		}
-		
 		$return .=  $string . "\033[0m";
+		
 		return $return;
 	}
 	
@@ -56,17 +63,20 @@ class Colors {
 	}
 }
 
-$color = new Colors;
+$color = new sh_color;
+
+// get arguments
 $args = getopt('s:c:C:');
 
-
+// test if arguments exist
 if(!isset($args['c'])){
-	$args['c'] = NULL;
+	$args['c'] = NULL; // prevents error
 }
 if(!isset($args['C'])){
-	$args['C'] = NULL;
+	$args['C'] = NULL; // prevents error
 }
 if(!isset($args['s'])){
+	// error out if no string
 	$args['s'] = 'ERROR: argument -s is required';
 	$args['c'] = 'bold_red';
 	$args['C'] = 'black';
@@ -74,21 +84,17 @@ if(!isset($args['s'])){
 
 $output = $color->string($args['s'], $args['c'], $args['C']).PHP_EOL;
 
+// print all the colors
+//$output = '';
+//foreach ($color->get_txtcolors() as $value) {
+//	$output .= $color->string('This is the txt color: '.str_replace('_', ' ',$value), $value).PHP_EOL;
+//}
+//foreach ($color->get_bgcolors() as $value) {
+//	$output .= $color->string('This is the bg color: '.str_replace('_', ' ',$value), NULL, $value).PHP_EOL;
+//}
+
 fwrite(STDOUT, $output);
 exit();
-
-
-// print all the colors
-// foreach ($color->get_txtcolors() as $value) {
-// 	echo $color->string('This is the txt color: '.str_replace('_', ' ',$value), $value).PHP_EOL;
-// }
-// foreach ($color->get_bgcolors() as $value) {
-// 	echo $color->string('This is the bg color: '.str_replace('_', ' ',$value), NULL, $value).PHP_EOL;
-// }
-
-
-
-
 
 
 
