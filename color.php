@@ -30,12 +30,12 @@ class sh_color {
 			'light_white'  => '97'
 		);
 		$this->txt_styles = array(
-			'regular'      => '0;',
-			'bold'         => '1;',
-			'dark'         => '2;', // this + gray = black
-			'underline'    => '4;',
-			'invert'       => '7;',
-			'strike'       => '9;'
+			'regular'      => '0',
+			'bold'         => '1',
+			'dark'         => '2', // this + gray = black
+			'underline'    => '4',
+			'invert'       => '7',
+			'strike'       => '9'
 		);
 		$this->bg_colors = array(
 			// regular
@@ -67,10 +67,10 @@ class sh_color {
 			$style = $this->txt_styles[strtolower((string) $txt_style)];
 		}
 		if(isset($this->txt_colors[strtolower((string) $txt_color)])){
-			$return .= "\033[".$style.$this->txt_colors[strtolower((string) $txt_color)] . "m";
+			$return .= "\033[".$style.';'.$this->txt_colors[strtolower((string) $txt_color)] . "m";
 		}
 		else{
-			$return .= "\033[".$style.'97'. "m";
+			$return .= "\033[".$style.';97'. "m";
 		}
 		if(isset($this->bg_colors[strtolower((string) $bg_color)])){
 			$return .= "\033[".$this->bg_colors[strtolower((string) $bg_color)] . "m";
@@ -141,7 +141,7 @@ if(FALSE){
 }
 
 echo $output;
-exit(0);;
+exit(0);
 
 
 
