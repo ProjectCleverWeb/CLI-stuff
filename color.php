@@ -99,10 +99,8 @@ $color = new sh_color;
 $args = getopt('s:S:c:C:');
 
 // stdin
-stream_set_blocking(STDIN,0);
-$handle = fopen('php://stdin', 'r');
-$stdin = stream_get_contents($handle);
-
+$stdin = '';
+if(!posix_isatty(STDIN)){$stdin = file_get_contents('php://stdin');}
 
 // test if arguments exist
 if(empty($args['c'])){
@@ -125,6 +123,7 @@ if(empty($args['s'])){
 	}
 	else{
 		$args['s'] = (string) $stdin;
+		$str_switch = TRUE;
 	}
 }
 
@@ -144,13 +143,6 @@ if(FALSE){
 	}
 }
 
-echo $stdin.$output;
-exit(0);
-
-
-
-
-
-
-
+if(isset($str_switch)){echo $output;}
+else{echo $stdin.$output;}
 
