@@ -4,7 +4,7 @@
  */
 class sh_color {
 	private $txt_colors = array();
-	private $txt_styles  = array();
+	private $txt_styles = array();
 	private $bg_colors  = array();
 
 	public function __construct(){
@@ -98,6 +98,12 @@ $color = new sh_color;
 // get arguments
 $args = getopt('s:S:c:C:');
 
+// stdin
+stream_set_blocking(STDIN,0);
+$handle = fopen('php://stdin', 'r');
+$stdin = stream_get_contents($handle);
+
+
 // test if arguments exist
 if(empty($args['c'])){
 	$args['c'] = NULL; // prevents error
@@ -108,10 +114,8 @@ if(empty($args['C'])){
 if(empty($args['S'])){
 	$args['S'] = NULL; // prevents error
 }
+
 if(empty($args['s'])){
-	stream_set_blocking(STDIN,0);
-	$handle = fopen('php://stdin', 'r');
-	$stdin = stream_get_contents($handle);
 	if(empty($stdin)){
 		// error out if no string
 		$args['s'] = 'ERROR: String is empty, please use STDIN or argument -s';
@@ -140,7 +144,7 @@ if(FALSE){
 	}
 }
 
-echo $output;
+echo $stdin.$output;
 exit(0);
 
 
