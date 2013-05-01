@@ -30,23 +30,23 @@ class sh_color {
 			'light_white'  => '97'
 		);
 		$this->txt_styles = array(
-			'regular'   => '0;',
-			'bold'      => '1;',
-			'dark'      => '2;', // this + gray = black
-			'underline' => '4;',
-			'invert'    => '7;',
-			'strike'    => '9;'
+			'regular'      => '0;',
+			'bold'         => '1;',
+			'dark'         => '2;', // this + gray = black
+			'underline'    => '4;',
+			'invert'       => '7;',
+			'strike'       => '9;'
 		);
 		$this->bg_colors = array(
 			// regular
-			'gray'   => '40',
-			'red'    => '41',
-			'green'  => '42',
-			'yellow' => '43',
-			'blue'   => '44',
-			'purple' => '45',
-			'cyan'   => '46',
-			'white'  => '47',
+			'gray'         => '40',
+			'red'          => '41',
+			'green'        => '42',
+			'yellow'       => '43',
+			'blue'         => '44',
+			'purple'       => '45',
+			'cyan'         => '46',
+			'white'        => '47',
 			// light
 			'light_gray'   => '100',
 			'light_red'    => '101',
