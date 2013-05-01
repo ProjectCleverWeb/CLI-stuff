@@ -100,7 +100,7 @@ $args = getopt('s:S:c:C:');
 
 // stdin
 $stdin = '';
-if(!posix_isatty(STDIN)){$stdin = file_get_contents('php://stdin');}
+if(!posix_isatty(STDIN)){$stdin = substr(file_get_contents('php://stdin'),0,-1);}
 
 // test if arguments exist
 if(empty($args['c'])){
