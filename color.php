@@ -96,11 +96,17 @@ class sh_color {
 $color = new sh_color;
 
 // get arguments
-$args = getopt('s:S:c:C:');
+$longopts = array(
+	'no-stdin',
+	'print-all'
+);
+$args = getopt('s:S:c:C:',$longopts);
 
 // stdin
 $stdin = '';
-if(!posix_isatty(STDIN)){$stdin = substr(file_get_contents('php://stdin'),0,-1);}
+if(!isset($args['no-stdin'])){
+	if(!posix_isatty(STDIN)){$stdin = substr(file_get_contents('php://stdin'),0,-1);}
+}
 
 // test if arguments exist
 if(empty($args['c'])){
@@ -127,10 +133,8 @@ if(empty($args['s'])){
 	}
 }
 
-$output = $color->color_string($args['s'], $args['c'], $args['C'], $args['S']);
-
-// print all the possiblities
-if(FALSE){
+if(isset($args['print-all'])){
+	// print all the possiblities
 	$output = '';
 	foreach ($color->get_txtstyles() as $value) {
 		$output .= $color->color_string('This is the txt style: '.$value, 'green', NULL, $value).PHP_EOL;
@@ -142,7 +146,11 @@ if(FALSE){
 		$output .= $color->color_string('This is the bg color: '.$value, 'gray', $value, 'dark').PHP_EOL;
 	}
 }
+else{
+	// or print the inputs
+	$output = $color->color_string($args['s'], $args['c'], $args['C'], $args['S']);
+}
 
-if(isset($str_switch)){echo $output;}
+if(isset($str_switch) || isset($args['print-all'])){echo $output;}
 else{echo $stdin.$output;}
 
