@@ -61,16 +61,34 @@ class sh_color {
 
 	// Returns colored string
 	public function color_string($string, $txt_color=NULL, $bg_color=NULL, $txt_style=NULL){
-		$return = "";
-		$style = '0;';
-		if(isset($this->txt_styles[strtolower((string) $txt_style)])){
-			$style = $this->txt_styles[strtolower((string) $txt_style)];
-		}
-		if(isset($this->txt_colors[strtolower((string) $txt_color)])){
-			$return .= "\033[".$style.';'.$this->txt_colors[strtolower((string) $txt_color)] . "m";
+		$return = "\033[0m"; // start with blank slate
+		$style = '0';
+		if(stripos($txt_style, ',')){
+			$styles = explode(',', (string) $txt_style);
+			$style = '';
+			foreach ($styles as $value) {
+				if(isset($this->txt_styles[strtolower((string) $value)])){
+					$style .= $this->txt_styles[strtolower((string) $value)].';';
+				}
+			}
 		}
 		else{
-			$return .= "\033[".$style.';97'. "m";
+			if(isset($this->txt_styles[strtolower((string) $txt_style)])){
+				$style = $this->txt_styles[strtolower((string) $txt_style)].';';
+			}
+		}
+		// if neither txt or bg are set, remove the last ';'
+		if(!(
+			isset($this->txt_colors[strtolower((string) $txt_color)]) ||
+			isset($this->bg_colors[strtolower((string) $bg_color)])
+		)){
+			$style = substr($style,0,-1);
+		}
+		if(isset($this->txt_colors[strtolower((string) $txt_color)])){
+			$return .= "\033[".$style.$this->txt_colors[strtolower((string) $txt_color)] . "m";
+		}
+		else{
+			$return .= "\033[".$style."m";
 		}
 		if(isset($this->bg_colors[strtolower((string) $bg_color)])){
 			$return .= "\033[".$this->bg_colors[strtolower((string) $bg_color)] . "m";
