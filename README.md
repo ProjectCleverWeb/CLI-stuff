@@ -74,3 +74,6 @@ This will show the string "task complete: Make example #4" where "Make example #
     }
     
     git-unpushed | php color.php -c green -S bold
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ProjectCleverWeb/CLI-stuff/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
